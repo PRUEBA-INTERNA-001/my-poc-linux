@@ -12,14 +12,17 @@ on:
 env:
   ACTIONS_RUNNER_DEBUG: true
   ACTIONS_STEP_DEBUG: true
+  PATH_DESTINO: ${{ vars.PATH_DESTINO }}
+  SERVIDORES: ${{ vars.SERVIDORES }}
+  MASK_INCLUDE_FILES: ${{ vars.MASK_INCLUDE_FILES }}
   
 jobs:
   deploy-dev:
     uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
     with:
       deploy_platform: 'linux'
-      path_destino: ${{ vars.PATH_DESTINO }}
-      servidores: ${{ vars.SERVIDORES }}
-      mask_include_files: ${{ vars.MASK_INCLUDE_FILES }}
+      path_destino: ${{ env.PATH_DESTINO }}
+      servidores: ${{ env.SERVIDORES }}
+      mask_include_files: ${{ env.MASK_INCLUDE_FILES }}
       environment: "desarrollo"
     secrets: inherit
