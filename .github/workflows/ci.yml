@@ -1,0 +1,24 @@
+name: Execution CI
+
+on:
+  push:
+    branches:
+      - feature/*
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
+  
+jobs:
+  deploy-dev:
+    uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
+    with:
+      deploy_platform: 'linux'
+      path_destino: ${{ vars.path_destino }}
+      servidores: ${{ vars.servidores }}
+      environment: "desarrollo"
+    secrets: inherit

@@ -1,0 +1,52 @@
+name: Execution CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag que se usará para desplegar (ej: v1.2.3)'
+        required: true
+        type: string
+      servidores:
+        description: 'Anota los servidores separados por coma si es mas de uno (ej: server-a,server-b)'
+        required: true
+        default: 'server-a'
+        type: string
+
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
+
+jobs:
+  deploy-cert:
+    name: Desplegar versión ${{ inputs.release_tag }} en CERT
+    uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-cd.yml@main
+    with:
+      deploy_platform: 'linux'
+      environment: "certificacion"
+      path_destino: ${{ vars.path_destino }}
+      release_tag: ${{ inputs.release_tag }}
+      servidores: ${{ inputs.servidores }}
+    secrets: inherit
+
+  aprobacion-QA:
+    needs: [deploy-cert]
+    name: Aprobar versión ${{ inputs.release_tag }} para pasar a PRODUCCIÓN
+    uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/aprobacionQA.yml@main
+    with:
+      aprobacion_qa: true
+      environment: "qa_aprobado"
+      release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
+
+  deploy-prod:
+    name: Desplegar versión ${{ inputs.release_tag }} en PRODUCCIÓN
+    needs: [deploy-cert, aprobacion-QA]
+    uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-cd.yml@main
+    with:
+      deploy_platform: 'linux'
+      environment: "produccion"
+      path_destino: ${{ vars.path_destino }}
+      release_tag: ${{ inputs.release_tag }}
+      servidores: ${{ inputs.servidores }}
+    secrets: inherit
