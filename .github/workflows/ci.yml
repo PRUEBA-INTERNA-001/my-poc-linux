@@ -14,26 +14,12 @@ env:
   ACTIONS_STEP_DEBUG: true
   
 jobs:
-  prepare-variables:
-    runs-on: ubuntu-latest
-    outputs:
-      path_destino: ${{ steps.export-vars.outputs.path_destino }}
-      servidores: ${{ steps.export-vars.outputs.servidores }}
-      mask_include_files: ${{ steps.export-vars.outputs.mask_include_files }}
-    steps:
-      - id: export-vars
-        run: |
-          echo "path_destino=${{ vars.PATH_DESTINO }}" >> $GITHUB_OUTPUT
-          echo "servidores=${{ vars.SERVIDORES }}" >> $GITHUB_OUTPUT
-          echo "mask_include_files=${{ vars.MASK_INCLUDE_FILES }}" >> $GITHUB_OUTPUT
-
   deploy-dev:
-    needs: [prepare-variables]
     uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
     with:
       deploy_platform: 'linux'
-      path_destino: ${{ needs.prepare-variables.outputs.path_destino }}
-      servidores: ${{ needs.prepare-variables.outputs.servidores }}
-      mask_include_files: ${{ needs.prepare-variables.outputs.mask_include_files }}
+      path_destino: '/tmp'
+      servidores: 'server-a'
+      mask_include_files: 'etc/ data/'
       environment: "desarrollo"
     secrets: inherit
