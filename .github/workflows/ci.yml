@@ -18,5 +18,6 @@ jobs:
     uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
     with:
       deploy_platform: 'linux'
+      sonar_enabled: true  # o false, sin comillas
       environment: "desarrollo"
     secrets: inherit
