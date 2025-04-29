@@ -1,12 +1,9 @@
-name: Execution CI
+name: Execution release
 
 on:
-  push:
-    branches:
-      - feature/*
   pull_request:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 env:
@@ -18,5 +15,5 @@ jobs:
     uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
     with:
       deploy_platform: 'linux'
-      environment: "desarrollo"
+      environment: "certificacion"
     secrets: inherit

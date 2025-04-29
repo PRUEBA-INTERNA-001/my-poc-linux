@@ -24,9 +24,7 @@ jobs:
     with:
       deploy_platform: 'linux'
       environment: "certificacion"
-      path_destino: ${{ vars.path_destino }}
       release_tag: ${{ inputs.release_tag }}
-      servidores: ${{ inputs.servidores }}
     secrets: inherit
 
   aprobacion-QA:
@@ -46,7 +44,5 @@ jobs:
     with:
       deploy_platform: 'linux'
       environment: "produccion"
-      path_destino: ${{ vars.path_destino }}
       release_tag: ${{ inputs.release_tag }}
-      servidores: ${{ inputs.servidores }}
     secrets: inherit
