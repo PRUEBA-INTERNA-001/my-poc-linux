@@ -14,6 +14,7 @@ jobs:
   deploy-dev:
     uses: PRUEBA-INTERNA-001/chi-GitHub-Templates/.github/workflows/linuxBash-ci.yml@main
     with:
+      deploy_platform: 'linux'
       environment: "desarrollo"
       create_release: true
     secrets: inherit
